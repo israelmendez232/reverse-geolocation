@@ -1,0 +1,28 @@
+{
+    "place_id": "75474896",
+    "licence": "https://locationiq.com/attribution",
+    "osm_type": "node",
+    "osm_id": "6579491944",
+    "lat": "-23.5511455",
+    "lon": "-46.6330925",
+    "display_name": "Espaço Cósmico, Praça Clovis Bevilaqua, Sé, São Paulo, Região Imediata de São Paulo, RMSP, Região Intermediária de São Paulo, São Paulo, Southeast Region, 01001-010, Brazil",
+    "address": {
+        "artwork": "Espaço Cósmico",
+        "road": "Praça Clovis Bevilaqua",
+        "suburb": "Sé",
+        "city_district": "Sé",
+        "city": "São Paulo",
+        "county": "Região Imediata de São Paulo",
+        "state_district": "Região Intermediária de São Paulo",
+        "state": "São Paulo",
+        "postcode": "01001-010",
+        "country": "Brazil",
+        "country_code": "br"
+    },
+    "boundingbox": [
+        "-23.5512455",
+        "-23.5510455",
+        "-46.6331925",
+        "-46.6329925"
+    ]
+}
