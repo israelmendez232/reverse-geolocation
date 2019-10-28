@@ -3,12 +3,13 @@ Usado para saber a localização do usuário através dos pontos de Latitude e L
 
 ## Elementos
 **Geolocalização**
-API gratuita utilizada para puxar os dados é [BigDataCloud](https://www.bigdatacloud.com/geocoding-apis/free-reverse-geocode-to-city-api?gclid=EAIaIQobChMIkKTk7Ze_5QIVFwWRCh35AQ5nEAAYASAAEgKOD_D_BwE) - Apesar de gratuita, ela possui um limite de `50,000 queries/month`.
-
 <br>
+API gratuita utilizada para puxar os dados é [BigDataCloud](https://www.bigdatacloud.com/geocoding-apis/free-reverse-geocode-to-city-api?gclid=EAIaIQobChMIkKTk7Ze_5QIVFwWRCh35AQ5nEAAYASAAEgKOD_D_BwE). Apesar de gratuita, ela possui um limite de `50,000 queries/month`.
+
 <br>
 
 **CEP**
+<br>
 API gratuita e aberta para saber o bairro a partir do CEP que foi usada é [WideApps](https://apps.widenet.com.br/busca-cep/api-de-consulta). Aparentemente, sem nenhum limite.
 
 ## Essencial:

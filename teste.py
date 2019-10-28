@@ -1,7 +1,7 @@
 import requests
 import json
 
-cepCode="15700-598"
+cepCode="1317-000"
 
 url = "http://apps.widenet.com.br/busca-cep/api/cep/{}.json".format(cepCode)
 
