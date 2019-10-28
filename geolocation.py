@@ -35,7 +35,8 @@ def newCSV(df):
     if os.path.exists(arquivo):
         os.remove(arquivo) 
     else: 
-        df.to_csv(arquivo)
+        df.drop(columns=['latitude', 'longitude']) # Não é mais necessário as tabelas de latitude e longitude
+        df.to_csv(arquivo, index=False)
 
 def main(file):
     # Pegando o Arquivo antigo com Lat e Long:
