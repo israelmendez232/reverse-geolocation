@@ -31,7 +31,7 @@ def verificadorCEP(cepCode):
 
 # Salvando o arquivo para depois uso na pasta de files
 def newCSV(df):
-    arquivo = 'files/resultadoBairro-zipcode.csv'
+    arquivo = 'files/bairroPetLove.csv'
 
     ## Se o arquivo já existir, excluir o antigo. Se não, criar com os dados já da API.
     if os.path.exists(arquivo):

@@ -1,4 +1,4 @@
--- Usuários Ativos na Assinatura. Com cidade do estado de SP.
+-- Usuários Ativos na Assinatura. Por cidade do estado de SP.
 SELECT  
     address.city, 
     COUNT(subscriptions.user_id) AS Total
@@ -127,6 +127,22 @@ ON subscriptions.user_id = address.user_id
 GROUP BY address.city
 ORDER BY Total DESC
 
+/* DÚVIDA: tá retornando essa quantidade de pessoas, é normal?
+	CIDADE      TOTAL
+    NULL        152793
+    São Paulo	13816
+    Sao Paulo	4493
+    Guarulhos	906
+    Santo André	658
+    Osasco	    531
+    Campinas	526
+    Santos	    500
+    São Bernardo do Campo	431
+    Barueri	    327
+*/
+
+
+
 -- Usuários Inativos na Assinatura. Com zipcode da cidade de SP. =====> TESTAR DEPOIS!?!!!11 <======
 SELECT  
     address.zipcode, 
@@ -156,3 +172,19 @@ LEFT JOIN (
 ON subscriptions.user_id = address.user_id
 GROUP BY address.zipcode
 ORDER BY Total DESC
+
+/* DÚVIDA: tá retornando essa quantidade de pessoas, é normal?
+	ZIPCODE      TOTAL
+	NULL        165571
+    01404001	63
+    04140000	34
+    08310480	31
+    01415000	30
+    03186010	28
+    01321000	26
+    03423000	25
+    01314000	22
+    01322000	22
+    */
+
+

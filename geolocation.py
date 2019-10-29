@@ -3,7 +3,7 @@ import json
 import requests
 import pandas as pd
 
-file = 'files/results-20191028-105246.csv'
+file = 'files/results-20191029-152807.csv'
 
 # Arquivo antigo
 def oldCSV(file):
@@ -29,7 +29,7 @@ def reverseGeo(lat, long):
 
 # Salvando o arquivo para depois uso na pasta de files
 def newCSV(df):
-    arquivo = 'files/resultadoBairro.csv'
+    arquivo = 'files/bairroVetSmart.csv'
 
     ## Se o arquivo já existir, excluir o antigo. Se não, criar com os dados já da API.
     if os.path.exists(arquivo):
@@ -52,6 +52,11 @@ def main(file):
             cityDistrict = address['locality']
             df.at[index,'Bairro'] = cityDistrict
         except: 
+            if address['description']:
+                print("\n Problema com a API. Confira a mensagem de erro:")
+                print(address['description'])
+                return
+
             print("Erro para achar o bairro da linha {}".format(str(index)))
             df.at[index,'Bairro'] = None
 
