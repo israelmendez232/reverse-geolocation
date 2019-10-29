@@ -1,26 +1,28 @@
 -- Usuários Ativos na Assinatura. Por cidade do estado de SP.
 SELECT  
     address.city, 
-    COUNT(subscriptions.user_id) AS Total
+    COUNT(subscriptions.email) AS Total
 FROM (
     SELECT DISTINCT
         subscriptions.profile_id,
-    	users.id AS user_id
+    	users.id AS user_id,
+    	LOWER(TRIM(subscriptions.email)) AS email
     FROM koala.subscriptions subscriptions
+        JOIN koala.profiles profiles
+        	ON subscriptions.profile_id = profiles.id
         JOIN beagle.spree_users users 
-            ON subscriptions.profile_id = users.profile_id
+            ON LOWER(TRIM(subscriptions.email)) = LOWER(TRIM(users.email))
         WHERE 
             subscriptions.status = 'active'
             AND subscriptions.deleted_at IS NULL
-            AND subscriptions.next_delivery_date BETWEEN (GETDATE()-4) AND (GETDATE()+7)
+            -- AND subscriptions.next_delivery_date BETWEEN (GETDATE()-4) AND (GETDATE()+7)
             AND subscriptions.num_skus > 0
 ) AS subscriptions
 LEFT JOIN (
     SELECT DISTINCT 
     	orders.email, 
         orders.user_id,
-    	address.city, 
-    	address.zipcode
+    	address.city
     FROM beagle.spree_orders orders
     LEFT JOIN beagle.spree_addresses address
     ON orders.ship_address_id = address.id
@@ -30,71 +32,58 @@ LEFT JOIN (
     )
 ) AS address
 ON subscriptions.user_id = address.user_id
+WHERE address.city IS NOT NULL
+	AND address.city != 'São Paulo'
+	AND address.city != 'Sao Paulo'
 GROUP BY address.city
 ORDER BY Total DESC
 
-/* DÚVIDA: tá retornando essa quantidade de pessoas, é normal?
-	CIDADE      QUANTIDADE
-    NULL        2.107
-    São Paulo	182
-    Sao Paulo	54
-    Santos	    41
-    Guarulhos	20
-    Santo André	10
-    Campinas	8
-    Mauá	    7
-    Osasco	    7
-    Araras	    6
-
-*/
 
 -- Usuários Ativos na Assinatura. Com zipcode da cidade de SP.
 SELECT  
     address.zipcode, 
-    COUNT(subscriptions.user_id) AS Total
+    COUNT(subscriptions.email) AS Total
 FROM (
     SELECT DISTINCT
-        subscriptions.profile_id
-    ,	users.id AS user_id
+        subscriptions.profile_id,
+    	users.id AS user_id,
+    	LOWER(TRIM(subscriptions.email)) AS email
     FROM koala.subscriptions subscriptions
+        JOIN koala.profiles profiles
+        	ON subscriptions.profile_id = profiles.id
         JOIN beagle.spree_users users 
-            ON subscriptions.profile_id = users.profile_id
+            ON LOWER(TRIM(subscriptions.email)) = LOWER(TRIM(users.email))
         WHERE 
-            subscriptions.status='active'
+            subscriptions.status = 'active'
             AND subscriptions.deleted_at IS NULL
-            AND subscriptions.next_delivery_date BETWEEN (GETDATE()-4) AND (GETDATE()+7)
+            -- AND subscriptions.next_delivery_date BETWEEN (GETDATE()-4) AND (GETDATE()+7)
             AND subscriptions.num_skus > 0
 ) AS subscriptions
 LEFT JOIN (
     SELECT DISTINCT 
     	orders.email, 
         orders.user_id,
-    	address.zipcode
+    	address.zipcode,
+    	address.city
     FROM beagle.spree_orders orders
     LEFT JOIN beagle.spree_addresses address
     ON orders.ship_address_id = address.id
-    WHERE ( -- Focado para Puxar os CEPs apenas de SP
-    	address.city = 'São Paulo'
-    	OR address.city = 'Sao Paulo'
+    WHERE ( -- Define o Estado de SP como principal.
+        state_id = 56
+        OR state_name = 'SP'
     )
 ) AS address
 ON subscriptions.user_id = address.user_id
+WHERE ( -- Focado para Puxar os CEPs apenas de SP
+    	address.city = 'São Paulo'
+    	OR address.city = 'Sao Paulo'
+    )
 GROUP BY address.zipcode
 ORDER BY Total DESC
 
-/* DÚVIDA: tá retornando essa quantidade de pessoas, é normal?
-	ZIPCODE     QUANTIDADE
-    NULL        2.306
-    03003030	7
-    02203010	4
-    01317000	3
-    05065010	3
-    02415000	3
-    04576080	2
-    04456000	2
-    03068000	2
-    03019020	2
-*/
+
+
+
 
 -- Usuários Inativos na Assinatura. Com cidade do estado de SP. =====> TESTAR DEPOIS!?!!!11 <======
 SELECT  
