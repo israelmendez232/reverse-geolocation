@@ -1,11 +1,16 @@
 -- Usuários Ativos na Assinatura. Por cidade do estado de SP.
 SELECT  
     address.city, 
+    COUNT(CASE WHEN address.email IS NOT NULL THEN 1 ELSE NULL END) AS Apenas_Email,
+    COUNT(CASE WHEN subscriptions.phone IS NOT NULL THEN 1 ELSE NULL END) AS Apenas_Telefone,
+    COUNT(CASE WHEN address.email IS NOT NULL AND subscriptions.phone IS NOT NULL THEN 1 ELSE NULL END) AS Email_Telefone,
+    COUNT(CASE WHEN signedUpForNewFeatures IS true THEN 1 ELSE NULL END) AS Early_Adopters,
     COUNT(subscriptions.email) AS Total
 FROM (
     SELECT DISTINCT
         subscriptions.profile_id,
     	users.id AS user_id,
+        phone 
     	LOWER(TRIM(subscriptions.email)) AS email
     FROM koala.subscriptions subscriptions
         JOIN koala.profiles profiles
@@ -42,11 +47,16 @@ ORDER BY Total DESC
 -- Usuários Ativos na Assinatura. Com zipcode da cidade de SP.
 SELECT  
     address.zipcode, 
+    COUNT(CASE WHEN address.email IS NOT NULL THEN 1 ELSE NULL END) AS Apenas_Email,
+    COUNT(CASE WHEN subscriptions.phone IS NOT NULL THEN 1 ELSE NULL END) AS Apenas_Telefone,
+    COUNT(CASE WHEN address.email IS NOT NULL AND subscriptions.phone IS NOT NULL THEN 1 ELSE NULL END) AS Email_Telefone,
+    COUNT(CASE WHEN signedUpForNewFeatures IS true THEN 1 ELSE NULL END) AS Early_Adopters,
     COUNT(subscriptions.email) AS Total
 FROM (
     SELECT DISTINCT
         subscriptions.profile_id,
     	users.id AS user_id,
+        phone, 
     	LOWER(TRIM(subscriptions.email)) AS email
     FROM koala.subscriptions subscriptions
         JOIN koala.profiles profiles
