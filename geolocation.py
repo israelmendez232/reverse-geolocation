@@ -3,7 +3,7 @@ import json
 import requests
 import pandas as pd
 
-file = 'files/results-20191029-152807.csv'
+file = 'files/latitudeLongitudeVetSmart.csv'
 
 # Arquivo antigo
 def oldCSV(file):
@@ -42,23 +42,38 @@ def main(file):
     # Pegando o Arquivo antigo com Lat e Long:
     df = oldCSV(file)
     df['Bairro'] = ""
+    df['Cidade'] = ""
+    df['Estado'] = ""
 
     print(" ===> Começando verificação do GeoLocation pela API. \n")
     print("Quantidade: Linha Atual / Total")
     for index, row in df.iterrows(): 
-        address = reverseGeo(row['latitude'], row['longitude'])
+        latitude = row['latitude']
+        longitude = row['longitude']
+        address = reverseGeo(latitude, longitude)
 
         try: 
             cityDistrict = address['locality']
             df.at[index,'Bairro'] = cityDistrict
+                
+            # Puxar Estado
+            try: 
+                cityDistrict = address['principalSubdivision']
+                df.at[index,'Estado'] = cityDistrict
+            except:
+                df.at[index,'Estado'] = None
+
         except: 
-            if address['description']:
+            print(address)
+
+            try:
+                address['description']
                 print("\n Problema com a API. Confira a mensagem de erro:")
                 print(address['description'])
                 return
-
-            print("Erro para achar o bairro da linha {}".format(str(index)))
-            df.at[index,'Bairro'] = None
+            except: 
+                print("Erro para achar o bairro da linha {}. Latitude: '{}' e longitude: '{}'.".format(str(index), str(latitude), str(longitude)))
+                df.at[index,'Bairro'] = None
 
         # Passa quantas linhas faltam para acabar.
         print("Quantidade: {} / {} \r".format(str(index), df.shape[0]), end='', flush=True)
